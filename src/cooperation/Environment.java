@@ -15,8 +15,8 @@ public class Environment extends SimStateSweep {
 	int BetweenFamiliarity = 10;
 	
 	//Space Parameters
-	int GridWidth = 500;
-	int GridHeight = 500;
+	int GridWidth = 50;
+	int GridHeight = 50;
 	
 	// Runtime variables
 	public Bag AgentCollection = new Bag();
@@ -55,13 +55,14 @@ public class Environment extends SimStateSweep {
 			
 			Agent a = new Agent(random_x, random_y, i, type);
 			System.out.println("Made agent: " + i);
-			sparseSpace.setObjectLocation(a, random_x, random_y);
 			AgentCollection.add(a);
 			schedule.scheduleRepeating(a);
+			sparseSpace.setObjectLocation(a, random_x, random_y);
+			
 		}
 	}
 	
-	public void initializeFamiliarity() {
+	public int[][] initializeFamiliarity(int[][]FamiliarityArray) {
 		for(Object a : AgentCollection) {
 			Agent b = (Agent) a;
 			for (int i = 0; i < NumAgents; i++) {
@@ -77,6 +78,7 @@ public class Environment extends SimStateSweep {
 				
 			}
 		}
+		return (FamiliarityArray);
 	}
 	
 	public void calculateFamiliarity(Agent a) {
@@ -92,14 +94,78 @@ public class Environment extends SimStateSweep {
 	public void start() {
 		super.start();
 		spaces = Spaces.SPARSE;
-		make2DSpace(spaces, GridWidth, GridHeight);
+		this.make2DSpace(spaces, GridWidth, GridHeight);
 		System.out.println("Made space");
 		FamiliarityArray = new int[NumAgents][NumAgents];
 		System.out.println("Made familiarity array");
 		makeAgents();
 		System.out.println("Made agents");
-		initializeFamiliarity();
+		FamiliarityArray = initializeFamiliarity(FamiliarityArray);
 		System.out.println("Preset familiarity");
+	}
+
+	public double getMutationRate() {
+		return MutationRate;
+	}
+
+	public void setMutationRate(double mutationRate) {
+		MutationRate = mutationRate;
+	}
+
+	public int getNumAgents() {
+		return NumAgents;
+	}
+
+	public void setNumAgents(int numAgents) {
+		NumAgents = numAgents;
+	}
+
+	public double getTypeOneProportion() {
+		return TypeOneProportion;
+	}
+
+	public void setTypeOneProportion(double typeOneProportion) {
+		TypeOneProportion = typeOneProportion;
+	}
+
+	public int getMinDistance() {
+		return MinDistance;
+	}
+
+	public void setMinDistance(int minDistance) {
+		MinDistance = minDistance;
+	}
+
+	public int getWithinFamiliarity() {
+		return WithinFamiliarity;
+	}
+
+	public void setWithinFamiliarity(int withinFamiliarity) {
+		WithinFamiliarity = withinFamiliarity;
+	}
+
+	public int getBetweenFamiliarity() {
+		return BetweenFamiliarity;
+	}
+
+	public void setBetweenFamiliarity(int betweenFamiliarity) {
+		BetweenFamiliarity = betweenFamiliarity;
+	}
+
+	public int getGridWidth() {
+		return GridWidth;
+	}
+
+	public void setGridWidth(int gridWidth) {
+		GridWidth = gridWidth;
+	}
+
+	public int getGridHeight() {
+		return GridHeight;
+	}
+
+	public void setGridHeight(int gridHeight) {
+		GridHeight = gridHeight;
 	}
 
 }
