@@ -14,6 +14,9 @@ public class Environment extends SimStateSweep {
 	int WithinFamiliarity = 50;
 	int BetweenFamiliarity = 10;
 	
+	double sociabilityLower = 0.1;
+	double sociabilityUpper = 0.9;
+	
 	//Space Parameters
 	int GridWidth = 50;
 	int GridHeight = 50;
@@ -81,7 +84,7 @@ public class Environment extends SimStateSweep {
 		return (FamiliarityArray);
 	}
 	
-	public void calculateFamiliarity(Agent a) {
+	public int calculateFamiliarity(Agent a) {
 		int SumFamiliarity = 0;
 		for(int i = 0; i < NumAgents; i++) {
 			if(a.id == i) {
@@ -89,6 +92,11 @@ public class Environment extends SimStateSweep {
 			}
 			SumFamiliarity = SumFamiliarity + FamiliarityArray[a.id][i];
 		}
+		return SumFamiliarity;
+	}
+	
+	public void placeAgent(Agent a, int x, int y) {
+		this.sparseSpace.setObjectLocation(a, x, y);
 	}
 	
 	public void start() {
