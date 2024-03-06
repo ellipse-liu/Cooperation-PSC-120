@@ -21,8 +21,8 @@ public class Environment extends SimStateSweep {
 	double alpha = 0.4;
 	double famDecay = 0.1;
 	
-	double sociabilityMean = 0.1;
-	double sociabilityStd = 0.9;
+	double sociabilityMean = 0.3;
+	double sociabilityStd = 0.05;
 	
 	//Space Parameters
 	int GridWidth = 50;
@@ -82,7 +82,7 @@ public class Environment extends SimStateSweep {
 		for(Object a : AgentCollection) {
 			Agent b = (Agent) a;
 			for (int i = 0; i < NumAgents; i++) {
-				if (b.id == i + 1) {
+				if (b.id == i) {
 					continue;
 				}
 				if (b.type == ((Agent)AgentCollection.get(i)).type) {
@@ -93,6 +93,14 @@ public class Environment extends SimStateSweep {
 				}
 				
 			}
+		}
+		
+		//DEBUG PRINT
+		for (int[] row : FamiliarityArray) {
+            for (int num : row) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
 		}
 		return (FamiliarityArray);
 	}

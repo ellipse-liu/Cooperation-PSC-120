@@ -27,17 +27,22 @@ public class Agent implements Steppable {
 	}
 
 	public Agent meet(Environment state) {
-		int[] chance_array = new int[state.NumAgents];
+		double[] chance_array = new double[state.NumAgents];
 		int randomnum = state.random.nextInt(99);
 		
-		int lower = 0;
-		int higher = 0;
+		double lower = 0;
+		double higher = 0;
 		
 		int fSum = state.calculateFamiliarity(this);
 		for (Object a: state.AgentCollection ) {
 			Agent b = (Agent) a;
-			chance_array[b.id] = (int) ((state.FamiliarityArray[this.id][b.id] / fSum) * 100);
+			chance_array[b.id] = (((double)state.FamiliarityArray[this.id][b.id] / (double)fSum) * 100.0);
 		}
+		
+		 System.out.print("chance array for: " + this.id);
+		for (double num : chance_array) {
+            System.out.print(num + " ");
+        }
 		
 		for(int i = 0; i < state.NumAgents; i++) {
 			lower = higher;
@@ -129,7 +134,10 @@ public class Agent implements Steppable {
 	public void step(SimState state) {
 		Environment e = (Environment) state;
 		Agent pp = meet(e);
+		System.out.println("Agent x meeting Agent y");
+		System.out.println(this.id + " " + pp.id);
 		int kickid = calc_payoff(this, e);
+		System.out.println(kickid);
 		move(e);
 		e.update_connections(this.id, kickid, pp.id);
 	}
