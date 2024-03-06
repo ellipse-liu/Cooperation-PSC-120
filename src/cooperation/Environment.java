@@ -12,11 +12,18 @@ public class Environment extends SimStateSweep {
 	int NumAgents = 50; //number of agents in the simulation
 	double TypeOneProportion = 0.5; //proportion of Type One Agents in the simulation
 	int MinDistance = 5; // minimum spawning distance
-	int WithinFamiliarity = 50;
-	int BetweenFamiliarity = 10;
-	int maxConnections = 3; // num connections the agent can have
-	double BetweenCost = 1;
-	double WithinCost = 0.5;
+	int WithinFamiliarity = 50; // THESE ARE MAXIMUMS WE NEED TO GENERATE INITIAL WF BF ACCORDING TO NORMAL DISTRIBUTION
+	int BetweenFamiliarity = 10; //THESE ARE MAXIMUMS
+	
+	//update according to paper, scalar around 0, 1, so assigned scalars in fam array
+	double iwfmean = 0;
+	double iwfstd = 1;
+	double ibfmean = 0;
+	double ibfstd = 1;
+	
+	int maxConnections = 3; //num connections the agent can have
+	double BetweenCost = 0.2;
+	double WithinCost = 0.1;
 	double beta = 0.1;
 	double alpha = 0.4;
 	double famDecay = 0.1;
@@ -30,7 +37,7 @@ public class Environment extends SimStateSweep {
 	
 	// Runtime variables
 	public Bag AgentCollection = new Bag();
-	int[][] FamiliarityArray;
+	double[][] FamiliarityArray;
 	int[][] ConnectionsArray = new int[NumAgents][NumAgents];
 	
 	public Environment(long seed) {
@@ -78,7 +85,11 @@ public class Environment extends SimStateSweep {
 		}
 	}
 	
-	public int[][] initializeFamiliarity(int[][]FamiliarityArray) {
+	public double[][] initializeFamiliarity(double[][]FamiliarityArray) {
+		
+		Normal wfnorm = new Normal(iwfmean, iwfstd, random);
+		Normal bfnorm = new Normal(ibfmean, ibfstd, random);
+		
 		for(Object a : AgentCollection) {
 			Agent b = (Agent) a;
 			for (int i = 0; i < NumAgents; i++) {
@@ -86,18 +97,18 @@ public class Environment extends SimStateSweep {
 					continue;
 				}
 				if (b.type == ((Agent)AgentCollection.get(i)).type) {
-					FamiliarityArray[b.id][i] = WithinFamiliarity;
+					FamiliarityArray[b.id][i] = (0.2*wfnorm.nextDouble()) + 1.0;
 				}
 				else {
-					FamiliarityArray[b.id][i] = BetweenFamiliarity;
+					FamiliarityArray[b.id][i] = (0.2*bfnorm.nextDouble() + 1.0);
 				}
 				
 			}
 		}
 		
 		//DEBUG PRINT
-		for (int[] row : FamiliarityArray) {
-            for (int num : row) {
+		for (double[] row : FamiliarityArray) {
+            for (double num : row) {
                 System.out.print(num + " ");
             }
             System.out.println();
@@ -105,8 +116,8 @@ public class Environment extends SimStateSweep {
 		return (FamiliarityArray);
 	}
 	
-	public int calculateFamiliarity(Agent a) {
-		int SumFamiliarity = 0;
+	public double calculateFamiliarity(Agent a) {
+		double SumFamiliarity = 0;
 		for(int i = 0; i < NumAgents; i++) {
 			if(a.id == i) {
 				continue;
@@ -132,7 +143,7 @@ public class Environment extends SimStateSweep {
 		spaces = Spaces.SPARSE;
 		this.make2DSpace(spaces, GridWidth, GridHeight);
 		System.out.println("Made space");
-		FamiliarityArray = new int[NumAgents][NumAgents];
+		FamiliarityArray = new double[NumAgents][NumAgents];
 		System.out.println("Made familiarity array");
 		makeAgents();
 		System.out.println("Made agents");

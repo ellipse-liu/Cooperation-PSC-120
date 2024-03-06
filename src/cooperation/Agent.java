@@ -33,10 +33,10 @@ public class Agent implements Steppable {
 		double lower = 0;
 		double higher = 0;
 		
-		int fSum = state.calculateFamiliarity(this);
+		double fSum = state.calculateFamiliarity(this);
 		for (Object a: state.AgentCollection ) {
 			Agent b = (Agent) a;
-			chance_array[b.id] = (((double)state.FamiliarityArray[this.id][b.id] / (double)fSum) * 100.0);
+			chance_array[b.id] = ((state.FamiliarityArray[this.id][b.id] / fSum) * 100.0);
 		}
 		
 		 System.out.print("chance array for: " + this.id);
@@ -58,7 +58,7 @@ public class Agent implements Steppable {
 		int wit = 0;
 		int bit = 0;
 		for(int i = 0; i < arr.length; i++) {
-			if(arr[i] != null&& a.type == arr[i].type) {
+			if(arr[i] != null && a.type == arr[i].type) {
 				wit ++;
 			}
 			else {
