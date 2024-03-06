@@ -19,6 +19,7 @@ public class Environment extends SimStateSweep {
 	double WithinCost = 0.5;
 	double beta = 0.1;
 	double alpha = 0.4;
+	double famDecay = 0.1;
 	
 	double sociabilityMean = 0.1;
 	double sociabilityStd = 0.9;

@@ -13,7 +13,7 @@ public class Agent implements Steppable {
 	int id;
 	double sociability;
 	public int type;
-	Bag connections;
+	Bag connections = new Bag();
 	public int curr_payoff;
 
 	public Agent(int x, int y, int id, int type, double sociability) {
@@ -53,7 +53,7 @@ public class Agent implements Steppable {
 		int wit = 0;
 		int bit = 0;
 		for(int i = 0; i < arr.length; i++) {
-			if(a.type == arr[i].type) {
+			if(arr[i] != null&& a.type == arr[i].type) {
 				wit ++;
 			}
 			else {
@@ -65,7 +65,6 @@ public class Agent implements Steppable {
 	}
 	
 	public int calc_payoff(Agent pp, Environment state) { //O(n^2)
-		
 		Agent[] n_array = new Agent[this.connections.size() + 1];
 		this.connections.copyIntoArray(0, n_array, 0, this.connections.size());
 		
@@ -79,12 +78,12 @@ public class Agent implements Steppable {
 			
 			int to_kick = -1;
 			int bestpp = this.curr_payoff;
-			Agent[] best_array = (Agent[]) this.connections.toArray(); //set the best array to the current connections
+			Object[] best_array = this.connections.toArray(); //set the best array to the current connections
 			Agent[] potential_array = new Agent[state.maxConnections]; //create the new array up here to save on memory
 			
 			for(int i = 0; i<n_array.length;i++) { //iterate through each potential agent to pop, i
 				int potential_index = 0; //track index within potential_array
-				for(int j=0; i<n_array.length; j++) { //iterate through the n_array to add to potential
+				for(int j=0; j < n_array.length; j++) { //iterate through the n_array to add to potential
 					if(j != i) { //if the index j is not the excluded index i
 						potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
 						potential_index ++; //inc the pot_index
@@ -101,7 +100,13 @@ public class Agent implements Steppable {
 			this.curr_payoff = bestpp;
 			this.connections = new Bag(best_array);
 			
-			return n_array[to_kick].id; //returning the id of agent to kick
+			if(to_kick >= 0) {
+				return n_array[to_kick].id; //returning the id of agent to kick
+			}
+			else {
+				return -1;
+			}
+			
 			//TODO iterate
 		}
 		
