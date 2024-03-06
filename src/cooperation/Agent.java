@@ -11,12 +11,12 @@ public class Agent implements Steppable {
 	int x;
 	int y;
 	int id;
-	float sociability;
+	double sociability;
 	public int type;
 	Bag connections;
 	public int curr_payoff;
 
-	public Agent(int x, int y, int id, int type, float sociability) {
+	public Agent(int x, int y, int id, int type, double sociability) {
 		super();
 		this.x = x;
 		this.y = y;

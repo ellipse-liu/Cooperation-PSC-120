@@ -3,6 +3,7 @@ package cooperation;
 import sim.util.Bag;
 import spaces.Spaces;
 import sweep.SimStateSweep;
+import sim.util.distribution.Normal;
 
 public class Environment extends SimStateSweep {
 	
@@ -19,8 +20,8 @@ public class Environment extends SimStateSweep {
 	double beta = 0.1;
 	double alpha = 0.4;
 	
-	double sociabilityLower = 0.1;
-	double sociabilityUpper = 0.9;
+	double sociabilityMean = 0.1;
+	double sociabilityStd = 0.9;
 	
 	//Space Parameters
 	int GridWidth = 50;
@@ -47,6 +48,9 @@ public class Environment extends SimStateSweep {
 	}
 	
 	public void makeAgents() {
+		
+		Normal norm = new Normal(sociabilityMean, sociabilityStd, random); //normal distribution generator for sociability
+		
 		for (int i = 0; i < NumAgents; i++) {
 			
 			int random_x = random.nextInt(GridWidth);
@@ -62,7 +66,9 @@ public class Environment extends SimStateSweep {
 			
 			int type = random.nextBoolean(TypeOneProportion) ? 1:2;
 			
-			Agent a = new Agent(random_x, random_y, i, type);
+			double sociability = norm.nextDouble();
+			
+			Agent a = new Agent(random_x, random_y, i, type, sociability);
 			System.out.println("Made agent: " + i);
 			AgentCollection.add(a);
 			schedule.scheduleRepeating(a);
