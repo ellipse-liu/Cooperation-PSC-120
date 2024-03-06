@@ -1,6 +1,7 @@
 package cooperation;
 
 import ec.util.MersenneTwisterFast;
+import java.lang.Math;
 import sim.engine.Schedule;
 import sim.engine.SimState;
 import sim.engine.Steppable;
@@ -48,7 +49,61 @@ public class Agent implements Steppable {
 		return this;
 	}
 	
-	public int calc_payoff(Agent pp) {
+	public int ppf(Agent a, Agent[] arr, Environment state) {
+		int wit = 0;
+		int bit = 0;
+		for(int i = 0; i < arr.length; i++) {
+			if(a.type == arr[i].type) {
+				wit ++;
+			}
+			else {
+				bit++;
+			}
+		}
+		int payoff = (int) ((Math.pow((Math.pow(wit + 1, state.alpha)), Math.pow(bit + 1, state.beta)) * Math.pow(bit + 1, state.beta)) - (wit * state.WithinCost) - (bit * state.BetweenCost));
+		return payoff;
+	}
+	
+	public int calc_payoff(Agent pp, Environment state) { //O(n^2)
+		
+		Agent[] n_array = new Agent[this.connections.size() + 1];
+		this.connections.copyIntoArray(0, n_array, 0, this.connections.size());
+		
+		n_array[this.connections.size()] = pp;
+		if (n_array.length < state.maxConnections) {
+			this.curr_payoff = ppf(this, n_array, state);
+			this.connections = new Bag(n_array);
+			return -1;
+		}
+		else {
+			
+			int to_kick = -1;
+			int bestpp = this.curr_payoff;
+			Agent[] best_array = (Agent[]) this.connections.toArray(); //set the best array to the current connections
+			Agent[] potential_array = new Agent[state.maxConnections]; //create the new array up here to save on memory
+			
+			for(int i = 0; i<n_array.length;i++) { //iterate through each potential agent to pop, i
+				int potential_index = 0; //track index within potential_array
+				for(int j=0; i<n_array.length; j++) { //iterate through the n_array to add to potential
+					if(j != i) { //if the index j is not the excluded index i
+						potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
+						potential_index ++; //inc the pot_index
+					}
+				}
+				int newpp = ppf(this, potential_array, state);
+				if( newpp > bestpp) {
+					bestpp = newpp;
+					best_array = potential_array;
+					to_kick = i;
+				}
+			}
+			
+			this.curr_payoff = bestpp;
+			this.connections = new Bag(best_array);
+			
+			return n_array[to_kick].id; //returning the id of agent to kick
+			//TODO iterate
+		}
 		
 	}
 	
@@ -67,8 +122,11 @@ public class Agent implements Steppable {
 
 	@Override
 	public void step(SimState state) {
-		// TODO Auto-generated method stub
-		
+		Environment e = (Environment) state;
+		Agent pp = meet(e);
+		int kickid = calc_payoff(this, e);
+		move(e);
+		e.update_connections(this.id, kickid, pp.id);
 	}
 	
 }

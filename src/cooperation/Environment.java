@@ -13,6 +13,11 @@ public class Environment extends SimStateSweep {
 	int MinDistance = 5; // minimum spawning distance
 	int WithinFamiliarity = 50;
 	int BetweenFamiliarity = 10;
+	int maxConnections = 3; // num connections the agent can have
+	double BetweenCost = 1;
+	double WithinCost = 0.5;
+	double beta = 0.1;
+	double alpha = 0.4;
 	
 	double sociabilityLower = 0.1;
 	double sociabilityUpper = 0.9;
@@ -24,6 +29,7 @@ public class Environment extends SimStateSweep {
 	// Runtime variables
 	public Bag AgentCollection = new Bag();
 	int[][] FamiliarityArray;
+	int[][] ConnectionsArray = new int[NumAgents][NumAgents];
 	
 	public Environment(long seed) {
 		super(seed);
@@ -97,6 +103,13 @@ public class Environment extends SimStateSweep {
 	
 	public void placeAgent(Agent a, int x, int y) {
 		this.sparseSpace.setObjectLocation(a, x, y);
+	}
+	
+	public void update_connections(int a_id, int b_id, int pp_id) {
+		ConnectionsArray[a_id][pp_id] = 1;
+		if (b_id >= 0) {
+			ConnectionsArray[a_id][b_id] = 0;
+		}
 	}
 	
 	public void start() {
