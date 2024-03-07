@@ -14,7 +14,7 @@ public class Agent implements Steppable {
 	double sociability;
 	public int type;
 	Bag connections = new Bag();
-	public int curr_payoff;
+	public double curr_payoff;
 
 	public Agent(int x, int y, int id, int type, double sociability) {
 		super();
@@ -54,7 +54,7 @@ public class Agent implements Steppable {
 		return this;
 	}
 	
-	public int ppf(Agent a, Agent[] arr, Environment state) {
+	public double ppf(Agent a, Agent[] arr, Environment state) {
 		int wit = 0;
 		int bit = 0;
 		for(int i = 0; i < arr.length; i++) {
@@ -65,11 +65,11 @@ public class Agent implements Steppable {
 				bit++;
 			}
 		}
-		int payoff = (int) ((Math.pow((Math.pow(wit + 1, state.alpha)), Math.pow(bit + 1, state.beta)) * Math.pow(bit + 1, state.beta)) - (wit * state.WithinCost) - (bit * state.BetweenCost));
+		double payoff = ((Math.pow((Math.pow(wit + 1, state.alpha)), Math.pow(bit + 1, state.beta)) * Math.pow(bit + 1, state.beta)) - (wit * state.WithinCost) - (bit * state.BetweenCost));
 		return payoff;
 	}
 	
-	public int calc_payoff(Agent pp, Environment state) { //O(n^2)
+	public int calc_payoff(Agent pp, Environment state) { //O(n^2)?
 		Agent[] n_array = new Agent[this.connections.size() + 1];
 		this.connections.copyIntoArray(0, n_array, 0, this.connections.size());
 		
@@ -80,9 +80,8 @@ public class Agent implements Steppable {
 			return -1;
 		}
 		else {
-			
 			int to_kick = -1;
-			int bestpp = this.curr_payoff;
+			double bestpp = this.curr_payoff;
 			Object[] best_array = this.connections.toArray(); //set the best array to the current connections
 			Agent[] potential_array = new Agent[state.maxConnections]; //create the new array up here to save on memory
 			
@@ -94,7 +93,7 @@ public class Agent implements Steppable {
 						potential_index ++; //inc the pot_index
 					}
 				}
-				int newpp = ppf(this, potential_array, state);
+				double newpp = ppf(this, potential_array, state);
 				if( newpp > bestpp) {
 					bestpp = newpp;
 					best_array = potential_array;
@@ -120,14 +119,18 @@ public class Agent implements Steppable {
 	public void move(Environment state) {
 		int xsum = x;
 		int ysum = y;
-		for (Object a: connections) {
-			Agent b = (Agent) a;
-			xsum = xsum + b.x;
-			ysum = ysum + b.y;
-		}
-		int new_x = (int) (xsum/(connections.size() + 1));
-		int new_y = (int) (ysum/(connections.size() + 1));
-		state.placeAgent(this, new_x, new_y);
+		if(this.connections != null) {
+			for (Object a: this.connections) {
+				Agent b = (Agent) a;
+				if(b != null) {
+					xsum = xsum + b.x;
+					ysum = ysum + b.y;
+				}
+			}
+			int new_x = (int) (xsum/(connections.size() + 1));
+			int new_y = (int) (ysum/(connections.size() + 1));
+			state.placeAgent(this, new_x, new_y);
+		}	
 	}
 
 	@Override
@@ -136,7 +139,7 @@ public class Agent implements Steppable {
 		Agent pp = meet(e);
 		System.out.println("Agent x meeting Agent y");
 		System.out.println(this.id + " " + pp.id);
-		int kickid = calc_payoff(this, e);
+		int kickid = calc_payoff(pp, e);
 		System.out.println(kickid);
 		move(e);
 		e.update_connections(this.id, kickid, pp.id);
