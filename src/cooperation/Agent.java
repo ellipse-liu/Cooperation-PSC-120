@@ -15,6 +15,7 @@ public class Agent implements Steppable {
 	public int type;
 	Bag connections = new Bag();
 	public double curr_payoff;
+	public double attenuationRate;
 
 	public Agent(int x, int y, int id, int type, double sociability) {
 		super();

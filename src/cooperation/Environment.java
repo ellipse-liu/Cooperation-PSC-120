@@ -30,6 +30,7 @@ public class Environment extends SimStateSweep {
 	
 	double sociabilityMean = 0.3;
 	double sociabilityStd = 0.05;
+	double attenuationRate = 0.01;
 	
 	//Space Parameters
 	int GridWidth = 50;
@@ -136,6 +137,23 @@ public class Environment extends SimStateSweep {
 		if (b_id >= 0) {
 			ConnectionsArray[a_id][b_id] = 0;
 		}
+	}
+	
+	//need to do the experimenter to step through this function because there is no step function in environment.
+	// subtracts attenuationRate from familiarity array
+	public int[][] initializeAttenuations(int[][]FamiliarityArray) {
+		for(Object a : AgentCollection) {
+			Agent b = (Agent) a;
+			for (int i = 0; i < NumAgents; i++) {
+				// attenuation is capped at 0
+				if (FamiliarityArray[b.id][i] == 0) {
+					continue;
+				} else {
+					FamiliarityArray [b.id][i] -= attenuationRate;
+				}
+			}
+		}
+		return (FamiliarityArray);
 	}
 	
 	public void start() {
