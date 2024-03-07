@@ -12,8 +12,8 @@ public class Environment extends SimStateSweep {
 	int NumAgents = 50; //number of agents in the simulation
 	double TypeOneProportion = 0.5; //proportion of Type One Agents in the simulation
 	int MinDistance = 5; // minimum spawning distance
-	int WithinFamiliarity = 50; // THESE ARE MAXIMUMS WE NEED TO GENERATE INITIAL WF BF ACCORDING TO NORMAL DISTRIBUTION
-	int BetweenFamiliarity = 10; //THESE ARE MAXIMUMS
+	int WithinFamiliarity = 50; // scalar
+	int BetweenFamiliarity = 10; // scalar
 	
 	//update according to paper, scalar around 0, 1, so assigned scalars in fam array
 	double iwfmean = 0;
@@ -97,10 +97,10 @@ public class Environment extends SimStateSweep {
 					continue;
 				}
 				if (b.type == ((Agent)AgentCollection.get(i)).type) {
-					FamiliarityArray[b.id][i] = (0.2*wfnorm.nextDouble()) + 1.0;
+					FamiliarityArray[b.id][i] = ((0.2*wfnorm.nextDouble()) + 1.0) * WithinFamiliarity;
 				}
 				else {
-					FamiliarityArray[b.id][i] = (0.2*bfnorm.nextDouble() + 1.0);
+					FamiliarityArray[b.id][i] = ((0.2*bfnorm.nextDouble() + 1.0)) * BetweenFamiliarity;
 				}
 				
 			}
