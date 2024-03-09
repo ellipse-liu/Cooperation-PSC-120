@@ -4,6 +4,7 @@ import sim.util.Bag;
 import spaces.Spaces;
 import sweep.SimStateSweep;
 import sim.util.distribution.Normal;
+import java.util.Random;
 
 public class Environment extends SimStateSweep {
 	
@@ -139,6 +140,28 @@ public class Environment extends SimStateSweep {
 		}
 	}
 	
+    public int[][] mutation(int[][]ConnectionsArray){
+        Random random = new Random();
+        for (int i = 0; i < NumAgents; i++) {
+            for (int j = 0; j < NumAgents; j++) {
+                if (random.nextDouble() <= MutationRate) {
+                    if (ConnectionsArray[i][j] == 0) {
+                        ConnectionsArray[i][j] = 1;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        agentA.connections.add(agentB);
+                    } else {
+                        ConnectionsArray[i][j] = 0;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        agentA.connections.remove(agentB);
+                    }
+                }
+            }
+        }
+        return (ConnectionsArray);
+    }
+    
 	//need to do the experimenter to step through this function because there is no step function in environment.
 	// subtracts attenuationRate from familiarity array
 	public double[][] initializeAttenuations(double [][]FamiliarityArray) {
