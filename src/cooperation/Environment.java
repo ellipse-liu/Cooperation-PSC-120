@@ -141,13 +141,17 @@ public class Environment extends SimStateSweep {
 	
 	//need to do the experimenter to step through this function because there is no step function in environment.
 	// subtracts attenuationRate from familiarity array
-	public int[][] initializeAttenuations(int[][]FamiliarityArray) {
+	public double[][] initializeAttenuations(double [][]FamiliarityArray) {
 		for(Object a : AgentCollection) {
 			Agent b = (Agent) a;
 			for (int i = 0; i < NumAgents; i++) {
 				// attenuation is capped at 0
 				if (FamiliarityArray[b.id][i] == 0) {
 					continue;
+				}
+				// if attenuation is less than 0.01 make it 0
+				else if (FamiliarityArray[b.id][i] < 0.01) {
+					FamiliarityArray[b.id][i] = 0;
 				} else {
 					FamiliarityArray [b.id][i] -= attenuationRate;
 				}
@@ -156,6 +160,7 @@ public class Environment extends SimStateSweep {
 		return (FamiliarityArray);
 	}
 	
+	// add experimenter to the start
 	public void start() {
 		super.start();
 		spaces = Spaces.SPARSE;
@@ -164,6 +169,10 @@ public class Environment extends SimStateSweep {
 		FamiliarityArray = new double[NumAgents][NumAgents];
 		System.out.println("Made familiarity array");
 		makeAgents();
+		// initialize the experimenter by calling initialize in the parent class
+		if(observer != null) {
+			observer.initialize(sparseSpace, spaces);
+		}
 		System.out.println("Made agents");
 		FamiliarityArray = initializeFamiliarity(FamiliarityArray);
 		System.out.println("Preset familiarity");
