@@ -19,11 +19,11 @@ public class Experimenter extends Observer {
 	
 	// call the attenuation familiarity function
 	public void triggerAttenuationFamiliarity (Environment state) {
-			state.initializeAttenuations(state.FamiliarityArray);
+			state.initializeAttenuations();
 			//DEBUG PRINT
 			for (double[] row : state.FamiliarityArray) {
+				System.out.println("Decayed Familiarity: ");
 	            for (double num : row) {
-	            	System.out.println("Decayed Familiarity");
 	                System.out.print(num + " ");
 	            }
 	            System.out.println();

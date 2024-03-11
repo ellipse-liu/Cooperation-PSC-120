@@ -9,7 +9,7 @@ public class Environment extends SimStateSweep {
 	
 	//Experiment Parameters
 	double MutationRate = 0.1; //chance of a bond mutating
-	int NumAgents = 50; //number of agents in the simulation
+	int NumAgents = 3; //number of agents in the simulation
 	double TypeOneProportion = 0.5; //proportion of Type One Agents in the simulation
 	int MinDistance = 5; // minimum spawning distance
 	int WithinFamiliarity = 50; // scalar
@@ -141,7 +141,7 @@ public class Environment extends SimStateSweep {
 	
 	//need to do the experimenter to step through this function because there is no step function in environment.
 	// subtracts attenuationRate from familiarity array
-	public double[][] initializeAttenuations(double [][]FamiliarityArray) {
+	public void initializeAttenuations() {
 		for(Object a : AgentCollection) {
 			Agent b = (Agent) a;
 			for (int i = 0; i < NumAgents; i++) {
@@ -157,7 +157,7 @@ public class Environment extends SimStateSweep {
 				}
 			}
 		}
-		return (FamiliarityArray);
+
 	}
 	
 	// add experimenter to the start

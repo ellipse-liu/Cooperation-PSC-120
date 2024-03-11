@@ -13,7 +13,7 @@ public class CooperationGUI extends GUIStateSweep {
 	}
 
 	public static void main(String[] args) {
-		CooperationGUI.initialize(Environment.class, null, CooperationGUI.class, 400, 400, Color.WHITE, Color.BLUE, true, Spaces.SPARSE);
+		CooperationGUI.initialize(Environment.class, Experimenter.class, CooperationGUI.class, 400, 400, Color.WHITE, Color.BLUE, true, Spaces.SPARSE);
 	}
 
 }
