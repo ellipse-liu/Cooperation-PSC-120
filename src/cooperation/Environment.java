@@ -184,8 +184,8 @@ public class Environment extends SimStateSweep {
 	    double currentFamiliarityIJ = FamiliarityArray[agentIId][agentJId];
 	    double currentFamiliarityJI = FamiliarityArray[agentJId][agentIId];
 
-	    FamiliarityArray[agentIId][agentJId] = 15 * (Math.pow(1.04, currentFamiliarityIJ));
-	    FamiliarityArray[agentJId][agentIId] = 15 * (Math.pow(1.04, currentFamiliarityJI));
+	    FamiliarityArray[agentIId][agentJId] = 1.04 * currentFamiliarityIJ;
+	    FamiliarityArray[agentJId][agentIId] = 1.04 * currentFamiliarityJI;
 	}
 
 
