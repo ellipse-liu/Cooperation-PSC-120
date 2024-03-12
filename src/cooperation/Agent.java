@@ -140,6 +140,7 @@ public class Agent implements Steppable {
 		Agent pp = meet(e);
 		System.out.println("Agent x meeting Agent y");
 		System.out.println(this.id + " " + pp.id);
+		e.reinforce(this.id, pp.id); //Increase familiarity for agent i and j upon meeting
 		int kickid = calc_payoff(pp, e);
 		System.out.println(kickid);
 		move(e);

@@ -177,6 +177,16 @@ public class Environment extends SimStateSweep {
 		FamiliarityArray = initializeFamiliarity(FamiliarityArray);
 		System.out.println("Preset familiarity");
 	}
+	
+	//Increase familiarity for agent i and j upon meeting
+	public void reinforce(int agentIId, int agentJId) {
+	    double currentFamiliarityIJ = FamiliarityArray[agentIId][agentJId];
+	    double currentFamiliarityJI = FamiliarityArray[agentJId][agentIId];
+
+	    FamiliarityArray[agentIId][agentJId] = 15 * (Math.pow(1.04, currentFamiliarityIJ));
+	    FamiliarityArray[agentJId][agentIId] = 15 * (Math.pow(1.04, currentFamiliarityJI));
+	}
+
 
 	public double getMutationRate() {
 		return MutationRate;
