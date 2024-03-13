@@ -11,7 +11,7 @@ public class Environment extends SimStateSweep {
 	
 	//Experiment Parameters
 	double MutationRate = 0.1; //chance of a bond mutating
-	int NumAgents = 3; //number of agents in the simulation
+	int NumAgents = 6; //number of agents in the simulation
 	double TypeOneProportion = 0.5; //proportion of Type One Agents in the simulation
 	int MinDistance = 5; // minimum spawning distance
 	int WithinFamiliarity = 50; // scalar
@@ -161,27 +161,31 @@ public class Environment extends SimStateSweep {
 		}
 
 	}
-//    public int[][] mutation(int[][]ConnectionsArray){
-//        Random random = new Random();
-//        for (int i = 0; i < NumAgents; i++) {
-//            for (int j = 0; j < NumAgents; j++) {
-//                if (random.nextDouble() <= MutationRate) {
-//                    if (ConnectionsArray[i][j] == 0) {
-//                        ConnectionsArray[i][j] = 1;
-//                        Agent agentA = (Agent) AgentCollection.get(i);
-//                        Agent agentB = (Agent) AgentCollection.get(j);
-//                        agentA.connections.add(agentB);
-//                    } else {
-//                        ConnectionsArray[i][j] = 0;
-//                        Agent agentA = (Agent) AgentCollection.get(i);
-//                        Agent agentB = (Agent) AgentCollection.get(j);
-//                        agentA.connections.remove(agentB);
-//                    }
-//                }
-//            }
-//        }
-//        return (ConnectionsArray);
-//    }
+    public void mutation(){
+        for (int i = 0; i < NumAgents; i++) {
+            for (int j = 0; j < NumAgents; j++) {
+                if (random.nextBoolean(MutationRate)) {
+                    if (ConnectionsArray[i][j] == 0) {
+                        ConnectionsArray[i][j] = 1;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        agentA.connections.add(agentB);
+                		agentA.move(this);
+
+                        System.out.println("Mutated added at " + i + "," + j);
+                    } else {
+                        ConnectionsArray[i][j] = 0;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        agentA.connections.remove(agentB);
+                        agentA.move(this);
+                        System.out.println("Mutated removed at " + i + "," + j);
+                    }
+                }
+            }
+        }
+       
+    }
 	
 	// add experimenter to the start
 	public void start() {
