@@ -14,6 +14,7 @@ public class Experimenter extends Observer {
 	
 	public void step(SimState state) {
 		super.step(state);
+		triggerMutation((Environment) state);
 		triggerAttenuationFamiliarity((Environment) state);
 	}
 	
@@ -30,6 +31,18 @@ public class Experimenter extends Observer {
 			}
 		
 		
+	}
+	
+	public void triggerMutation(Environment state) {
+		state.mutation(state.ConnectionsArray);
+		for (int[] row : state.ConnectionsArray) {
+			for (int num : row) {
+            	System.out.println("Mutated Connections Array:");
+                System.out.print(num + " ");
+            }
+            System.out.println();
+		}
+
 	}
 
 }
