@@ -76,10 +76,13 @@ public class Environment extends SimStateSweep {
 			}
 			
 			int type = random.nextBoolean(TypeOneProportion) ? 1:2;
+
+			Random r = new Random();
+			double cultureValue = 100 + (100 - 0) * r.nextDouble();
 			
 			double sociability = norm.nextDouble();
 			
-			Agent a = new Agent(random_x, random_y, i, type, sociability);
+			Agent a = new Agent(random_x, random_y, i, type, cultureValue, sociability);
 			System.out.println("Made agent: " + i);
 			AgentCollection.add(a);
 			schedule.scheduleRepeating(a);
