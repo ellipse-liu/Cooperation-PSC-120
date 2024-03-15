@@ -11,18 +11,20 @@ public class Agent implements Steppable {
 	int x;
 	int y;
 	int id;
+	double culture;
 	double sociability;
 	public int type;
 	Bag connections = new Bag();
 	public double curr_payoff;
 	public double attenuationRate;
 
-	public Agent(int x, int y, int id, int type, double sociability) {
+	public Agent(int x, int y, int id, int type, double culture, double sociability) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.id = id;
 		this.type = type;
+		this.culture = culture;
 		this.sociability = sociability;
 		this.curr_payoff = 0;
 	}
