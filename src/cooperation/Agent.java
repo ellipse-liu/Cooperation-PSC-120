@@ -12,6 +12,7 @@ public class Agent implements Steppable {
 	int y;
 	int id;
 	double culture;
+	final double CULTURE_FACTOR = 0.25;
 	double sociability;
 	public int type;
 	Bag connections = new Bag();
