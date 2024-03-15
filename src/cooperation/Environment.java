@@ -77,8 +77,12 @@ public class Environment extends SimStateSweep {
 			
 			int type = random.nextBoolean(TypeOneProportion) ? 1:2;
 
+<<<<<<< HEAD
 			Random r = new Random();
 			double cultureValue = 100 + (100 - 0) * r.nextDouble();
+=======
+			double cultureValue = random.nextDouble(1 + (100 - 1));
+>>>>>>> f3a763a20f0a5b0019526e0d06e9292d9e03cd17
 			
 			double sociability = norm.nextDouble();
 			
