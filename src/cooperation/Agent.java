@@ -11,18 +11,21 @@ public class Agent implements Steppable {
 	int x;
 	int y;
 	int id;
+	double culture;
+	final double CULTURE_FACTOR = 0.25;
 	double sociability;
 	public int type;
 	Bag connections = new Bag();
 	public double curr_payoff;
 	public double attenuationRate;
 
-	public Agent(int x, int y, int id, int type, double sociability) {
+	public Agent(int x, int y, int id, int type, double culture, double sociability) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.id = id;
 		this.type = type;
+		this.culture = culture;
 		this.sociability = sociability;
 		this.curr_payoff = 0;
 	}
@@ -143,6 +146,8 @@ public class Agent implements Steppable {
 		e.reinforce(this.id, pp.id); //Increase familiarity for agent i and j upon meeting
 		int kickid = calc_payoff(pp, e);
 		System.out.println(kickid);
+		this.culture = CULTURE_FACTOR * Math.max(this.culture, pp.culture);
+		pp.culture = CULTURE_FACTOR * Math.max(this.culture, pp.culture);
 		move(e);
 		e.update_connections(this.id, kickid, pp.id);
 	}
