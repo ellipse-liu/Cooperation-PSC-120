@@ -16,6 +16,7 @@ public class Experimenter extends Observer {
 		super.step(state);
 		triggerMutation((Environment) state);
 		triggerAttenuationFamiliarity((Environment) state);
+		System.out.println("Number of Agents in enviroment: " +((Environment)state).AgentCollection.size());
 	}
 	
 	// call the attenuation familiarity function

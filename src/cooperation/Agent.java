@@ -91,7 +91,6 @@ public class Agent implements Steppable {
 				for(int j=0; j < n_array.length; j++) { //iterate through the n_array to add to potential
 					if(j != i) { //if the index j is not the excluded index i
 						potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
-						System.out.println("potential index in j" +  potential_array[potential_index]);
 						potential_index ++; //inc the pot_index
 					}
 				}
