@@ -173,16 +173,9 @@ public class Environment extends SimStateSweep {
 	                        ConnectionsArray[i][j] = 1;
 	                        Agent agentA = (Agent) AgentCollection.get(i);
 	                        Agent agentB = (Agent) AgentCollection.get(j);
-	                        agentA.connections.add(agentB);
+	                        agentA.calc_payoff(agentB, this);
 	                		agentA.move(this);
-	                        System.out.println("Mutated added at " + i + "," + j);
-	                    } else {
-	                        ConnectionsArray[i][j] = 0;
-	                        Agent agentA = (Agent) AgentCollection.get(i);
-	                        Agent agentB = (Agent) AgentCollection.get(j);
-	                        agentA.connections.remove(agentB);
-	                        agentA.move(this);
-	                        System.out.println("Mutated removed at " + i + "," + j);
+	                        System.out.println("Mutated at " + i + "," + j);
 	                    }
                 }
                 }
