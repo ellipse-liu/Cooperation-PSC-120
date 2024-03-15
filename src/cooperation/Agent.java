@@ -147,6 +147,8 @@ public class Agent implements Steppable {
 		e.reinforce(this.id, pp.id); //Increase familiarity for agent i and j upon meeting
 		int kickid = calc_payoff(pp, e);
 		System.out.println(kickid);
+		this.culture = CULTURE_FACTOR * Math.max(this.culture, pp.culture);
+		pp.culture = CULTURE_FACTOR * Math.max(this.culture, pp.culture);
 		move(e);
 		e.update_connections(this.id, kickid, pp.id);
 	}
