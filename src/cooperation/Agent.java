@@ -105,6 +105,12 @@ public class Agent implements Steppable {
 			
 			this.curr_payoff = bestpp;
 			this.connections = new Bag(best_array);
+			for(Object b:this.connections) {
+
+				if (b == null) { 
+				this.connections.remove(b);
+				}
+			}
 			
 			if(to_kick >= 0) {
 				return n_array[to_kick].id; //returning the id of agent to kick
@@ -143,7 +149,7 @@ public class Agent implements Steppable {
 		for(int i = 0; i<n_array.length;i++) { //iterate through each potential agent to pop, i
 			int potential_index = 0; //track index within potential_array
 			for(int j=0; j < n_array.length; j++) { //iterate through the n_array to add to potential
-				if(j != i) { //if the index j is not the excluded index i
+				if(j != i && potential_index < potential_array.length) { //if the index j is not the excluded index i
 					potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
 					potential_index ++; //inc the pot_index
 				}
@@ -153,6 +159,11 @@ public class Agent implements Steppable {
 			best_array = potential_array;
 			to_kick = i;
 			
+		}
+		for(Object b: pp.connections) {
+			if (b == null) { 
+				pp.connections.remove(b);
+			}
 		}
 		
 		if(to_kick >= 0) {

@@ -166,23 +166,25 @@ public class Environment extends SimStateSweep {
         for (int i = 0; i < NumAgents; i++) {
             for (int j = 0; j < NumAgents; j++) {
                 if (random.nextBoolean(MutationRate)) {
-                    if (ConnectionsArray[i][j] == 0) {
-                        ConnectionsArray[i][j] = 1;
-                        Agent agentA = (Agent) AgentCollection.get(i);
-                        Agent agentB = (Agent) AgentCollection.get(j);
-                        //agentA.addConnection(agentB, this);
-                        agentA.connections.add(agentB);
-                        agentA.move(this);
-                        System.out.println("Mutated added at " + i + "," + j);
-                    } else {
-                        ConnectionsArray[i][j] = 0;
-                        Agent agentA = (Agent) AgentCollection.get(i);
-                        Agent agentB = (Agent) AgentCollection.get(j);
-                        //agentA.removeConnection(agentB, this);
-                        agentA.connections.remove(agentB);
-                        agentA.move(this);
-                        System.out.println("Mutated removed at " + i + "," + j);
-                    }
+                	if(i!=j) {
+	                    if (ConnectionsArray[i][j] == 0) {
+	                        ConnectionsArray[i][j] = 1;
+	                        Agent agentA = (Agent) AgentCollection.get(i);
+	                        Agent agentB = (Agent) AgentCollection.get(j);
+	                        agentA.addConnection(agentB, this);
+	                        //agentA.connections.add(agentB);
+	                        agentA.move(this);
+	                        System.out.println("Mutated added at " + i + "," + j);
+	                    } else {
+	                        ConnectionsArray[i][j] = 0;
+	                        Agent agentA = (Agent) AgentCollection.get(i);
+	                        Agent agentB = (Agent) AgentCollection.get(j);
+	                        //agentA.removeConnection(agentB, this);
+	                        agentA.connections.remove(agentB);
+	                        agentA.move(this);
+	                        System.out.println("Mutated removed at " + i + "," + j);
+	                    }
+                	}
                 }
             }
         }
