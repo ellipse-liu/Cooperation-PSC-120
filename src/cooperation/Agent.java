@@ -51,10 +51,8 @@ public class Agent implements Steppable {
 		for(int i = 0; i < state.NumAgents; i++) {
 			lower = higher;
 			higher = higher + chance_array[i];
-			if(randomnum >= lower && randomnum < higher) {
 				return ((Agent)state.AgentCollection.get(i));
 			}
-		}
 		return this;
 	}
 	
@@ -92,7 +90,7 @@ public class Agent implements Steppable {
 			for(int i = 0; i<n_array.length;i++) { //iterate through each potential agent to pop, i
 				int potential_index = 0; //track index within potential_array
 				for(int j=0; j < n_array.length; j++) { //iterate through the n_array to add to potential
-					if(j != i) { //if the index j is not the excluded index i
+					if(j != i && potential_index < potential_array.length) { //if the index j is not the excluded index i
 						potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
 						potential_index ++; //inc the pot_index
 					}
@@ -118,6 +116,51 @@ public class Agent implements Steppable {
 			//TODO iterate
 		}
 		
+	}
+	
+	public int addConnection(Agent pp, Environment state) {
+		Agent[] n_array = new Agent[this.connections.size() + 1];
+		this.connections.copyIntoArray(0, n_array, 0, this.connections.size());
+		
+		n_array[this.connections.size()] = pp;
+		
+		if (n_array.length < state.maxConnections) {
+			this.curr_payoff = ppf(this, n_array, state);
+			this.connections = new Bag(n_array);
+			return -1;
+		}
+		return -1;
+	}
+	
+	public int removeConnection(Agent pp, Environment state) {
+		Agent[] n_array = new Agent[this.connections.size()+1];
+		this.connections.copyIntoArray(0, n_array, 0, this.connections.size());
+		double bestpp = this.curr_payoff;
+		int to_kick = -1;
+		Object[] best_array = this.connections.toArray(); //set the best array to the current connections
+		Agent[] potential_array = new Agent[state.maxConnections]; //create the new array up here to save on memory
+		
+		for(int i = 0; i<n_array.length;i++) { //iterate through each potential agent to pop, i
+			int potential_index = 0; //track index within potential_array
+			for(int j=0; j < n_array.length; j++) { //iterate through the n_array to add to potential
+				if(j != i) { //if the index j is not the excluded index i
+					potential_array[potential_index] = n_array[j]; //set potential_array[potential_index] to the correspond n_array
+					potential_index ++; //inc the pot_index
+				}
+			}
+			double newpp = ppf(this, potential_array, state);
+			bestpp = newpp;
+			best_array = potential_array;
+			to_kick = i;
+			
+		}
+		
+		if(to_kick >= 0) {
+			return n_array[to_kick].id; //returning the id of agent to kick
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	public void move(Environment state) {

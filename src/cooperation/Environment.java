@@ -76,14 +76,8 @@ public class Environment extends SimStateSweep {
 			}
 			
 			int type = random.nextBoolean(TypeOneProportion) ? 1:2;
-
-<<<<<<< HEAD
 			Random r = new Random();
 			double cultureValue = 100 + (100 - 0) * r.nextDouble();
-=======
-			double cultureValue = random.nextDouble(1 + (100 - 1));
->>>>>>> f3a763a20f0a5b0019526e0d06e9292d9e03cd17
-			
 			double sociability = norm.nextDouble();
 			
 			Agent a = new Agent(random_x, random_y, i, type, cultureValue, sociability);
@@ -172,18 +166,25 @@ public class Environment extends SimStateSweep {
         for (int i = 0; i < NumAgents; i++) {
             for (int j = 0; j < NumAgents; j++) {
                 if (random.nextBoolean(MutationRate)) {
-                	if(i != j) {
-	                    if (ConnectionsArray[i][j] == 0) {
-	                        ConnectionsArray[i][j] = 1;
-	                        Agent agentA = (Agent) AgentCollection.get(i);
-	                        Agent agentB = (Agent) AgentCollection.get(j);
-	                        agentA.calc_payoff(agentB, this);
-	                		agentA.move(this);
-	                        System.out.println("Mutated at " + i + "," + j);
-	                    }
+                    if (ConnectionsArray[i][j] == 0) {
+                        ConnectionsArray[i][j] = 1;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        //agentA.addConnection(agentB, this);
+                        agentA.connections.add(agentB);
+                        agentA.move(this);
+                        System.out.println("Mutated added at " + i + "," + j);
+                    } else {
+                        ConnectionsArray[i][j] = 0;
+                        Agent agentA = (Agent) AgentCollection.get(i);
+                        Agent agentB = (Agent) AgentCollection.get(j);
+                        //agentA.removeConnection(agentB, this);
+                        agentA.connections.remove(agentB);
+                        agentA.move(this);
+                        System.out.println("Mutated removed at " + i + "," + j);
+                    }
                 }
-                }
-          }
+            }
         }
        
     }
