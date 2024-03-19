@@ -165,6 +165,12 @@ public class Environment extends SimStateSweep {
     public void mutation(){
         for (int i = 0; i < NumAgents; i++) {
             for (int j = 0; j < NumAgents; j++) {
+            	if(i == 0 && j == 0) {
+            		ConnectionsArray[i][j] = 0;
+            		Agent agentA = (Agent) AgentCollection.get(i);
+                    Agent agentB = (Agent) AgentCollection.get(j);
+                    agentA.connections.remove(agentB);
+            	}
                 if (random.nextBoolean(MutationRate)) {
                 	if(i!=j) {
 	                    if (ConnectionsArray[i][j] == 0) {

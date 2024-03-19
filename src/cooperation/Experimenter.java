@@ -29,9 +29,7 @@ public class Experimenter extends Observer {
 	                System.out.print(num + " ");
 	            }
 	            System.out.println();
-			}
-		
-		
+			}		
 	}
 	
 	public void triggerMutation(Environment state) {
